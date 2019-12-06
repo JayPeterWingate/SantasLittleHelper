@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityStandardAssets.CrossPlatformInput;
 using UnityStandardAssets.Characters.ThirdPerson;
 using System.Collections;
+using UnityEngine.Events;
 
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof (ThirdPersonCharacter))]
@@ -17,6 +18,9 @@ public class ThirdPersonUserControl : MonoBehaviour
 	[SerializeField] Transform pressiePoint;
 	private Pressie pressie = null;
 	private bool controlable = true;
+    public UnityEvent onPointScore = new UnityEvent();
+    public int score = 0;
+
 	private void Start()
 	{
 
@@ -106,7 +110,10 @@ public class ThirdPersonUserControl : MonoBehaviour
 			Pressie thePressie = pressie;
 			pressie.getHouse().SatifyGoal();
 			DropPresent();
-			Destroy(thePressie.gameObject);
+            score += 1;
+            if (onPointScore != null) { onPointScore.Invoke(); }
+
+            Destroy(thePressie.gameObject);
 		}
 	}
 }
