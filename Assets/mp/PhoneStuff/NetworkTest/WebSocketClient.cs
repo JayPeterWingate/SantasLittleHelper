@@ -42,11 +42,9 @@ public class WebSocketClient: MonoBehaviour {
 			case MessageTypes.PlayerLeft:
 				m = JsonUtility.FromJson<PlayerLeftMessage>(message);
 				break;
-			case MessageTypes.ModuleMessage:
-				m = JsonUtility.FromJson<ModuleMessage>(message);
-				break;
-			case MessageTypes.LockdownResponse:
-				m = JsonUtility.FromJson<LockdownResponse>(message);
+			case MessageTypes.PlayerMove:
+				
+				m = JsonUtility.FromJson<PlayerMoveMessage>(message);
 				break;
 		}
 		m_messages.Enqueue(m);

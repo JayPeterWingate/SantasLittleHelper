@@ -23,7 +23,7 @@ public class PlayerSpawner : MonoBehaviour
     
     int GetPlayerCount()
     {
-        return Mathf.Max(minPlayerCount, PlayerPrefs.GetInt("playerCount"));
+        return PhoneNetworkManager.manager.PlayerCount();
     }
 
     Rect GetPlayerRect(int index, int playerCount)

@@ -12,16 +12,10 @@ public enum MessageTypes
 
 	OperationStarted = 100,
 	OperationEnded = 101,
-	LevelInfo = 102,
 
-	ScrambleModules = 200,
-	ModuleMessage = 201,
-	ModuleUpdate = 202,
-
-	Lockdown = 300,
-	TriggerLockdown = 301,
-	LockdownResponse = 302,
-	LockdownResolved = 303,
+	PlayerMove = 201,
+	PlayerPickup = 202,
+	PlayerJump = 203,
 }
 [Serializable]
 public enum PhoneUserIcon
@@ -37,6 +31,13 @@ public class Message
 	public MessageTypes type;
 }
 
+public class PlayerMoveMessage : Message
+{
+	public int id;
+	public float x;
+	public float y;
+	public int pid;
+}
 public class PlayerJoinedMessage : Message
 {
 	public PlayerJoinedMessage()

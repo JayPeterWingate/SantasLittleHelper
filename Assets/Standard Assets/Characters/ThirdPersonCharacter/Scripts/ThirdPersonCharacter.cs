@@ -139,12 +139,12 @@ namespace UnityStandardAssets.Characters.ThirdPerson
                 m_Animator.SetFloat(turnHash, m_TurnAmount);
                 lastTurn = m_TurnAmount;
             }
-			
+			/*
             if(lastGrounded != m_IsGrounded)
             {
                 m_Animator.SetBool(onGroundHash, m_Crouching);
                 lastGrounded = m_IsGrounded;
-            }
+            }*/
             
 			if (jump)
 			{

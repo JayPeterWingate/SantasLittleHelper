@@ -4,11 +4,13 @@ using UnityStandardAssets.CrossPlatformInput;
 using UnityStandardAssets.Characters.ThirdPerson;
 using System.Collections;
 using UnityEngine.Events;
+using System.Collections.Generic;
 
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof (ThirdPersonCharacter))]
 public class ThirdPersonUserControl : MonoBehaviour
 {
+	static public List<ThirdPersonUserControl> players = new List<ThirdPersonUserControl>();
 	public int playerNumber;
 	private ThirdPersonCharacter m_Character; // A reference to the ThirdPersonCharacter on the object
 	[SerializeField] private Transform m_Cam;                  // A reference to the main camera in the scenes transform
@@ -23,32 +25,43 @@ public class ThirdPersonUserControl : MonoBehaviour
 
 	private void Start()
 	{
-
+		players.Add(this);
 		// get the third person character ( this should never be null due to require component )
 		m_Character = GetComponent<ThirdPersonCharacter>();
 	}
-
+	private void OnDestroy()
+	{
+		players.Remove(this);	
+	}
 
 	private void Update()
 	{
-		if (!m_Jump)
+		/*if (!m_Jump)
 		{
 			m_Jump = Input.GetAxis("Jump" + playerNumber) == -1;
-		}
+		}*/
 	}
 
-
+	public float horizontalAxis, verticleAxis;
 	// Fixed update is called in sync with physics
 	private void FixedUpdate()
     {
 		if(controlable == false) { return; }
-        // read inputs
-        // if (playerNumber > 1) playerNumber = 1;
-		float h = Input.GetAxis("Horizontal"+ playerNumber);
-		float v = Input.GetAxis("Vertical" + playerNumber);
-		bool crouch = Input.GetKey(KeyCode.C);
+		// read inputs
+		// if (playerNumber > 1) playerNumber = 1;
+		float v, h;
+		if(PhoneNetworkManager.manager.Connected)
+		{
+			h = horizontalAxis;
+			v = verticleAxis;
+		} else
+		{
 
-		if (Input.GetAxis("Fire" + playerNumber) != 0)
+			h = Input.GetAxis("Horizontal" + playerNumber);
+			v = Input.GetAxis("Vertical" + playerNumber);
+		}
+		// bool crouch = Input.GetKey(KeyCode.C);
+		if ( false )//Input.GetAxis("Fire" + playerNumber) != 0)
 		{
 			Ray forward = new Ray(transform.position, transform.forward);
 			RaycastHit hit;
@@ -70,7 +83,7 @@ public class ThirdPersonUserControl : MonoBehaviour
 		m_Move = v*m_CamForward + h*m_Cam.right;
         
 		// pass all parameters to the character control script
-		m_Character.Move(m_Move, crouch, m_Jump, v != 0);
+		m_Character.Move(m_Move, false, m_Jump, v != 0);
 		m_Jump = false;
     }
     void PickupPresent(Pressie pressie)
@@ -115,5 +128,11 @@ public class ThirdPersonUserControl : MonoBehaviour
 
             Destroy(thePressie.gameObject);
 		}
+	}
+
+	internal void setAxis(float x, float y)
+	{
+		horizontalAxis = x;
+		verticleAxis = y;
 	}
 }

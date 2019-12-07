@@ -13,6 +13,7 @@ public enum LockdownPuzzleResult
 }
 
 public class PhoneNetworkManager:MonoBehaviour {
+	static public PhoneNetworkManager manager;
 	static private string url = "OA.fullbeans.studio";
 	static public string URL{ get { return url; } }
 	private PhonePlayerController m_playerController;
@@ -20,6 +21,7 @@ public class PhoneNetworkManager:MonoBehaviour {
 	private WebSocketClient m_client;
 	private bool m_inGame;
 	private bool m_connected;
+	public bool Connected { get { return m_connected; } }
 
 	private string m_code;
 	public UnityAction<string> onCodeChange;
@@ -28,6 +30,8 @@ public class PhoneNetworkManager:MonoBehaviour {
 
 
 	private void Start() {
+		DontDestroyOnLoad(this);
+		manager = this;
         url = "oa.fullbeans.studio";
         if (!PhoneNetworkManager.Enabled) { return; }
 		m_inGame = false;
@@ -88,7 +92,7 @@ public class PhoneNetworkManager:MonoBehaviour {
 
 	public int PlayerCount()
 	{
-		return m_playerController != null ? m_playerController.PlayerCount : 1;
+		return m_connected ? m_playerController.PlayerCount : 1;
 	}
     
 	void Update()
@@ -143,7 +147,7 @@ public class PhoneNetworkManager:MonoBehaviour {
                 
                 //print("A NEW CHALLENGER APPROACHES");
 				PlayerJoinedMessage pjm = (PlayerJoinedMessage)msg;
-				m_playerController.AddPlayer(new PlayerData { index = pjm.id, color = pjm.color, icon = (PhoneUserIcon)pjm.icon, name = pjm.name }, null);
+				m_playerController.AddPlayer(new PlayerData { index = pjm.id, color = pjm.color, icon = (PhoneUserIcon)pjm.icon, name = pjm.name });
 				
 				if (onPlayerCountChange != null)
 				{
@@ -155,7 +159,7 @@ public class PhoneNetworkManager:MonoBehaviour {
 			case MessageTypes.PlayerLeft:
                 
                 PlayerLeftMessage plm = (PlayerLeftMessage)msg;
-				m_playerController.RemovePlayer(plm.id, null);
+				m_playerController.RemovePlayer(plm.id);
 				
 				if (onPlayerCountChange != null)
 				{
@@ -163,7 +167,10 @@ public class PhoneNetworkManager:MonoBehaviour {
 				}
                 
                 break;
-			
+			case MessageTypes.PlayerMove:
+				PlayerMoveMessage pmm = (PlayerMoveMessage)msg;
+				ThirdPersonUserControl.players[pmm.pid - 1].setAxis(pmm.x, pmm.y);
+				break;
 		}
 	}
 }
