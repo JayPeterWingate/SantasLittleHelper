@@ -13,7 +13,7 @@ public class SantaUIController : MonoBehaviour
         {
             if(controller.playerNumber - 1 == i)
             {
-                text = transform.GetChild(i).GetComponent<TextMeshProUGUI>();
+                text = transform.GetChild(i).GetComponentInChildren<TextMeshProUGUI>();
             }
             transform.GetChild(i).gameObject.SetActive(controller.playerNumber - 1 == i);
             

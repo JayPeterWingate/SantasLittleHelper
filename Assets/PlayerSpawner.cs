@@ -33,7 +33,6 @@ public class PlayerSpawner : MonoBehaviour
 
         float width = playerCount <= 1 ? 1 : 0.5f;
         float height = playerCount <= 2 ? 1 : 0.5f;
-        print(index + " (" + x + " , " + y + ")");
         return new Rect(x, y, width, height);
     }
 }

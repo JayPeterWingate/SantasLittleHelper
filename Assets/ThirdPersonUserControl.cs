@@ -40,9 +40,10 @@ public class ThirdPersonUserControl : MonoBehaviour
 
 	// Fixed update is called in sync with physics
 	private void FixedUpdate()
-	{
+    {
 		if(controlable == false) { return; }
-		// read inputs
+        // read inputs
+        // if (playerNumber > 1) playerNumber = 1;
 		float h = Input.GetAxis("Horizontal"+ playerNumber);
 		float v = Input.GetAxis("Vertical" + playerNumber);
 		bool crouch = Input.GetKey(KeyCode.C);
@@ -51,10 +52,9 @@ public class ThirdPersonUserControl : MonoBehaviour
 		{
 			Ray forward = new Ray(transform.position, transform.forward);
 			RaycastHit hit;
-			print("FIRE");
 			if ( pressie != null)
 			{
-				print("SAD");
+				// print("SAD");
 				DropPresent();
 			}
 			else if (Physics.Raycast(forward, out hit, 1.0f) && hit.collider.tag == "pressie")
@@ -64,16 +64,16 @@ public class ThirdPersonUserControl : MonoBehaviour
 
 			
 		}
-
-		// calculate camera relative direction to move:
-		m_CamForward = m_Cam.forward;//Vector3.Scale(m_Cam.forward, new Vector3(1, 0, 1)).normalized;
+        
+        // calculate camera relative direction to move:
+        m_CamForward = m_Cam.forward;//Vector3.Scale(m_Cam.forward, new Vector3(1, 0, 1)).normalized;
 		m_Move = v*m_CamForward + h*m_Cam.right;
-
+        
 		// pass all parameters to the character control script
 		m_Character.Move(m_Move, crouch, m_Jump, v != 0);
 		m_Jump = false;
-	}
-	void PickupPresent(Pressie pressie)
+    }
+    void PickupPresent(Pressie pressie)
 	{ 
 		pressie.pickUp(pressiePoint);
 		this.pressie = pressie;

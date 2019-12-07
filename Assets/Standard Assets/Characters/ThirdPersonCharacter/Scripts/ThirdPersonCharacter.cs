@@ -56,11 +56,12 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 			m_ForwardAmount = move.z;
 
 			ApplyExtraTurnRotation();
-
+            
 			if (forwards)
 				m_Rigidbody.velocity = transform.forward * m_MoveSpeedMultiplier + m_Rigidbody.velocity;
-			// control and velocity handling is different when grounded and airborne:
-			if (m_IsGrounded)
+            // control and velocity handling is different when grounded and airborne:
+            
+            if (m_IsGrounded)
 			{
 				HandleGroundedMovement(crouch, jump);
 				
@@ -70,11 +71,11 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 				HandleAirborneMovement();
 			}
 
-			ScaleCapsuleForCrouching(crouch);
-			PreventStandingInLowHeadroom();
-
-			// send input and other state parameters to the animator
-			UpdateAnimator(move, jump);
+			// ScaleCapsuleForCrouching(crouch);
+			// PreventStandingInLowHeadroom();
+            
+            // send input and other state parameters to the animator
+            UpdateAnimator(move, jump);
 		}
 
 
@@ -120,29 +121,43 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 			m_Animator.SetBool("Pickup", true);
 		}
 
-		void UpdateAnimator(Vector3 move, bool jump)
+        float lastMove = 0.0f, lastTurn = 0.0f;
+        bool lastGrounded = false;
+        int speedHash = Animator.StringToHash("Speed");
+        int turnHash = Animator.StringToHash("Turn");
+        int onGroundHash = Animator.StringToHash("OnGround");
+        void UpdateAnimator(Vector3 move, bool jump)
 		{
 			// update the animator parameters
-			m_Animator.SetFloat("Speed", m_ForwardAmount, 0.1f, Time.deltaTime);
-			m_Animator.SetFloat("Turn", m_TurnAmount, 0.1f, Time.deltaTime);
-			m_Animator.SetBool("Crouch", m_Crouching);
-			m_Animator.SetBool("OnGround", m_IsGrounded);
+            if(Mathf.Abs(lastMove - m_ForwardAmount) > 0.5f)
+            {
+                m_Animator.SetFloat(speedHash, m_ForwardAmount);
+                lastMove = m_ForwardAmount;
+            }
+			if(Mathf.Abs(lastTurn - m_TurnAmount) > 0.5f)
+            {
+                m_Animator.SetFloat(turnHash, m_TurnAmount);
+                lastTurn = m_TurnAmount;
+            }
+			
+            if(lastGrounded != m_IsGrounded)
+            {
+                m_Animator.SetBool(onGroundHash, m_Crouching);
+                lastGrounded = m_IsGrounded;
+            }
+            
 			if (jump)
 			{
 				m_Animator.SetBool("Jump", true);
 			}
-
+            
 			// calculate which leg is behind, so as to leave that leg trailing in the jump animation
 			// (This code is reliant on the specific run cycle offset in our animations,
 			// and assumes one leg passes the other at the normalized clip times of 0.0 and 0.5)
 			float runCycle =
 				Mathf.Repeat(
 					m_Animator.GetCurrentAnimatorStateInfo(0).normalizedTime + m_RunCycleLegOffset, 1);
-			float jumpLeg = (runCycle < k_Half ? 1 : -1) * m_ForwardAmount;
-			if (m_IsGrounded)
-			{
-				m_Animator.SetFloat("JumpLeg", jumpLeg);
-			}
+			
 
 			// the anim speed multiplier allows the overall speed of walking/running to be tweaked in the inspector,
 			// which affects the movement speed because of the root motion.
@@ -205,7 +220,8 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 
 		void CheckGroundStatus()
 		{
-				m_IsGrounded = - 1f < m_Rigidbody.velocity.y && m_Rigidbody.velocity.y < 1f;
+
+            m_IsGrounded = true;// - 1f < m_Rigidbody.velocity.y && m_Rigidbody.velocity.y < 1f;
 			
 		}
 	}
