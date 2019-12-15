@@ -1,33 +1,62 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using System.Threading;
 using UnityEngine;
 using UnityEngine.Events;
-using WebSocketSharp;
-
+#if UNITY_EDITOR
+    using WebSocketSharp;
+#endif
 
 public class WebSocketClient: MonoBehaviour {
-	bool m_connected;
-	WebSocket m_ws;
-	Queue<Message> m_messages;
+#if UNITY_WEBGL
+    [DllImport("__Internal")]
+    private static extern void closeSocket();
+    [DllImport("__Internal")]
+    private static extern void sendMessage(string msg);
+    [DllImport("__Internal")] 
+    private static extern void connectToSocket(string socket);
+#endif
+    bool m_connected;
+#if UNITY_EDITOR
+    WebSocket m_ws;
+#endif
+    Queue<Message> m_messages;
 	public void Connect(string connectionString)
 	{
-		m_messages = new Queue<Message>();
+
+        m_messages = new Queue<Message>();
         //Debug.Log(connectionString);
-		m_ws = new WebSocket(connectionString);
-		m_ws.OnMessage += (sender, e) => AddToQueue(e.Data);
-		
-		m_ws.Connect();
-	}
-	public void Close()
-	{
-		m_ws.Close();
-	}
-	public void Send(string data)
-	{
-		m_ws.Send(data);
-	}
+#if UNITY_EDITOR
+        m_ws = new WebSocket(connectionString);
+        m_ws.OnMessage += (sender, e) => AddToQueue(e.Data);
+
+        m_ws.Connect();
+#endif
+#if UNITY_WEBGL
+        connectToSocket(connectionString);
+#endif
+
+    }
+    public void Close()
+    {
+#if UNITY_EDITOR
+        m_ws.Close();
+#endif
+#if UNITY_WEBGL
+        closeSocket();
+#endif
+    }
+    public void Send(string data)
+    {
+#if UNITY_EDITOR
+        m_ws.Send(data);
+#endif
+#if UNITY_WEBGL
+        sendMessage(data);
+#endif
+    }
 
 	public void AddToQueue(string message)
 	{
