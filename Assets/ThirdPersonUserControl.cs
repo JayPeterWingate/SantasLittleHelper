@@ -43,6 +43,7 @@ public class ThirdPersonUserControl : MonoBehaviour
 	}
 
 	public float horizontalAxis, verticleAxis;
+	public bool jump, drop;
 	// Fixed update is called in sync with physics
 	private void FixedUpdate()
     {
@@ -50,33 +51,37 @@ public class ThirdPersonUserControl : MonoBehaviour
 		// read inputs
 		// if (playerNumber > 1) playerNumber = 1;
 		float v, h;
-		if(PhoneNetworkManager.manager.Connected)
+		if (PhoneNetworkManager.manager.Connected)
 		{
 			h = horizontalAxis;
 			v = verticleAxis;
-		} else
+			if (jump)
+			{
+				m_Jump = true;
+			}
+			if (drop && pressie != null)
+			{
+				DropPresent();
+			}
+		}
+		else
 		{
 
 			h = Input.GetAxis("Horizontal" + playerNumber);
 			v = Input.GetAxis("Vertical" + playerNumber);
-		}
-		// bool crouch = Input.GetKey(KeyCode.C);
-		if ( false )//Input.GetAxis("Fire" + playerNumber) != 0)
-		{
-			Ray forward = new Ray(transform.position, transform.forward);
-			RaycastHit hit;
-			if ( pressie != null)
-			{
-				// print("SAD");
-				DropPresent();
-			}
-			else if (Physics.Raycast(forward, out hit, 1.0f) && hit.collider.tag == "pressie")
-			{
-				PickupPresent(hit.collider.GetComponent<Pressie>());
-			}
 
-			
-		}
+			if (Input.GetAxis("Fire" + playerNumber) != 0)
+			{
+				Ray forward = new Ray(transform.position, transform.forward);
+				RaycastHit hit;
+				if (pressie != null)
+				{
+					// print("SAD");
+					DropPresent();
+				}
+			}
+		}	
+		
         
         // calculate camera relative direction to move:
         m_CamForward = m_Cam.forward;//Vector3.Scale(m_Cam.forward, new Vector3(1, 0, 1)).normalized;
@@ -85,19 +90,19 @@ public class ThirdPersonUserControl : MonoBehaviour
 		// pass all parameters to the character control script
 		m_Character.Move(m_Move, false, m_Jump, v != 0);
 		m_Jump = false;
-    }
+
+		jump = false;
+		drop = false;
+	}
     void PickupPresent(Pressie pressie)
 	{ 
-		pressie.pickUp(pressiePoint);
+		pressie.pickUp(this, pressiePoint);
 		this.pressie = pressie;
-		m_Character.Pickup();
-
-		StartCoroutine(MakePresentDroppable());
+		
 		if (pressie.getHouse())
 		{
 			pressie.getHouse().OnPressieCollect(this);
 		}
-		controlable = false;
 	}
 	void DropPresent()
 	{
@@ -108,15 +113,25 @@ public class ThirdPersonUserControl : MonoBehaviour
 		}
 		pressie = null;
 	}
-	IEnumerator MakePresentDroppable()
+	private void OnCollisionEnter(Collision collision)
 	{
-		yield return new WaitForSeconds(1f);
-		controlable = true;
-	}
+		if (collision.gameObject.tag == "pressie" && pressie == null)
+		{
+			Pressie p = collision.gameObject.GetComponent<Pressie>();
+			if (p.owner != null)
+			{
+				print("DROP IT!");
+				p.owner.DropPresent();
+			}
 
+			PickupPresent(p);
+
+		}
+	}
 	private void OnTriggerEnter(Collider other)
 	{
-		print("HIT "+ other.gameObject);
+		print("HIT " + other.gameObject);
+		
 		if (pressie != null && other.transform.position == pressie.getHouse().transform.position)
 		{
 			print("IS OUR GUY");

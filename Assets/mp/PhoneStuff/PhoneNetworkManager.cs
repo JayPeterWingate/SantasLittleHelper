@@ -53,18 +53,26 @@ public class PhoneNetworkManager:MonoBehaviour {
 		
 		//print("http://" + url + "/newGame");
 		UnityWebRequest myWr = UnityWebRequest.Get("http://" + url + "/newGame");
+		print("http://" + url + "/newGame");
 		yield return myWr.SendWebRequest();
 		m_connected = myWr.responseCode == 200;
-		if (myWr.responseCode == 200 && myWr.downloadHandler.text.Length == 4) //Incorrect code length signifies a connection to the test server, not the correct build
+		if (myWr.responseCode == 200) //Incorrect code length signifies a connection to the test server, not the correct build
 		{
-			m_code = myWr.downloadHandler.text;
-            //Debug.Log(m_code);
-            if (MenuScript.Instance != null)
-            {
-                MenuScript.Instance.UpdatePhoneCode();
-            }
-            m_client.Connect("ws://" + url + "/" + m_code);
-			if(onCodeChange != null)
+			string response = System.Text.Encoding.UTF8.GetString(myWr.downloadHandler.data);
+			print(response);
+
+			NewGameResponse res = JsonUtility.FromJson<NewGameResponse>(response);
+			m_code = res.code;
+			
+			//Debug.Log(m_code);
+			if (MenuScript.Instance != null)
+			{
+				MenuScript.Instance.UpdatePhoneCode();
+			}
+			print("ws://" + url + "/" + m_code);
+			m_client.Connect("ws://" + res.connectionString + "/" + m_code);
+			
+			if (onCodeChange != null)
 			{
 				onCodeChange.Invoke(m_code);
 			}
@@ -72,6 +80,12 @@ public class PhoneNetworkManager:MonoBehaviour {
         else
         {
             Debug.Log("CONNECTION TO '" + url + "' HAS FAILED!\nReverting to non-phone gamemode if possible");
+			if (onCodeChange != null)
+			{
+				onCodeChange.Invoke(null);
+			}
+			Enabled = false;
+
         }
 	}
     
@@ -141,11 +155,12 @@ public class PhoneNetworkManager:MonoBehaviour {
 
 	void RecieveMessage(Message msg)
 	{
+		print("MESSAGE RECIEVED " + msg);
 		switch (msg.type)
 		{
 			case MessageTypes.PlayerJoined:
                 
-                //print("A NEW CHALLENGER APPROACHES");
+                print("A NEW CHALLENGER APPROACHES");
 				PlayerJoinedMessage pjm = (PlayerJoinedMessage)msg;
 				m_playerController.AddPlayer(new PlayerData { index = pjm.id, color = pjm.color, icon = (PhoneUserIcon)pjm.icon, name = pjm.name });
 				
@@ -170,6 +185,18 @@ public class PhoneNetworkManager:MonoBehaviour {
 			case MessageTypes.PlayerMove:
 				PlayerMoveMessage pmm = (PlayerMoveMessage)msg;
 				ThirdPersonUserControl.players[pmm.pid - 1].setAxis(pmm.x, pmm.y);
+				break;
+			case MessageTypes.PlayerAction:
+				PlayerActionMessage pam = (PlayerActionMessage)msg;
+				print(pam+" sad" );
+				if (pam.jump)
+				{
+					ThirdPersonUserControl.players[pam.pid - 1].jump = true;
+				}
+				else
+				{
+					ThirdPersonUserControl.players[pam.pid - 1].drop = true;
+				}
 				break;
 		}
 	}

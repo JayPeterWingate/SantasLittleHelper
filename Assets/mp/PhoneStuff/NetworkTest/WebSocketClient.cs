@@ -31,7 +31,7 @@ public class WebSocketClient: MonoBehaviour {
 
 	public void AddToQueue(string message)
 	{
-		//Debug.Log(message);
+		Debug.Log(message);
 		// TODO - REMOVE THIS BOLLOCKS
 		Message m = JsonUtility.FromJson<Message>(message);
 		switch(m.type)
@@ -45,6 +45,9 @@ public class WebSocketClient: MonoBehaviour {
 			case MessageTypes.PlayerMove:
 				
 				m = JsonUtility.FromJson<PlayerMoveMessage>(message);
+				break;
+			case MessageTypes.PlayerAction:
+				m = JsonUtility.FromJson<PlayerActionMessage>(message);
 				break;
 		}
 		m_messages.Enqueue(m);

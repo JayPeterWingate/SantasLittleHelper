@@ -116,10 +116,6 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 				}
 			}
 		}
-		public void Pickup()
-		{
-			m_Animator.SetBool("Pickup", true);
-		}
 
         float lastMove = 0.0f, lastTurn = 0.0f;
         bool lastGrounded = false;

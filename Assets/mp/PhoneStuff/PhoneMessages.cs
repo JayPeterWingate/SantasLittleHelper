@@ -3,6 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+struct NewGameResponse
+{
+	public string connectionString;
+	public string code;
+}
+
 [Serializable]
 public enum MessageTypes
 {
@@ -14,8 +20,7 @@ public enum MessageTypes
 	OperationEnded = 101,
 
 	PlayerMove = 201,
-	PlayerPickup = 202,
-	PlayerJump = 203,
+	PlayerAction = 202,
 }
 [Serializable]
 public enum PhoneUserIcon
@@ -30,7 +35,12 @@ public class Message
 {
 	public MessageTypes type;
 }
-
+public class PlayerActionMessage : Message
+{
+	public int id;
+	public int pid;
+	public bool jump;
+}
 public class PlayerMoveMessage : Message
 {
 	public int id;

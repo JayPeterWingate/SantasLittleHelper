@@ -6,6 +6,7 @@ using UnityEngine;
 public class Pressie : MonoBehaviour
 {
 	Transform pickUpLocation = null;
+	public ThirdPersonUserControl owner = null;
 	Rigidbody m_rigid;
 	HouseDropPoint house;
 	// Start is called before the first frame update
@@ -19,14 +20,14 @@ public class Pressie : MonoBehaviour
 	{
 		if(pickUpLocation != null)
 		{
-			m_rigid.position = pickUpLocation.position;
+			transform.position = (pickUpLocation.position);
 		}
 	}
-	public void pickUp(Transform newPosition)
+	public void pickUp(ThirdPersonUserControl santa, Transform newPosition)
 	{
-		print("FIRE");
+		owner = santa;
 		pickUpLocation = newPosition;
-		m_rigid.isKinematic = true;
+		//m_rigid.isKinematic = true;
 		GetComponent<BoxCollider>().isTrigger = true;
 		
 	}
