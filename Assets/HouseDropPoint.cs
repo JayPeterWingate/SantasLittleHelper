@@ -16,6 +16,7 @@ public class HouseDropPoint : MonoBehaviour
 	}
 	public void OnPressieCollect(ThirdPersonUserControl player)
 	{
+
 		system.gameObject.layer = LayerMask.NameToLayer("p"+player.playerNumber);
 		system.Play();
 	}

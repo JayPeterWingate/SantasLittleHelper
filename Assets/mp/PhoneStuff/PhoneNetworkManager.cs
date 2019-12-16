@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Networking;
+using UnityEngine.SceneManagement;
 
 public enum LockdownPuzzleResult
 {
@@ -23,13 +24,18 @@ public class PhoneNetworkManager:MonoBehaviour {
 	private bool m_connected;
 	public bool Connected { get { return m_connected; } }
 
-	private string m_code;
+	public string m_code;
 	public UnityAction<string> onCodeChange;
 	public UnityAction<int> onPlayerCountChange;
 	public string GetCode() { return m_code;}
 
 
 	private void Start() {
+		if(manager != null)
+		{
+			Destroy(this.gameObject);
+			return;
+		}
 		DontDestroyOnLoad(this);
 		manager = this;
         url = "oa.fullbeans.studio";
@@ -43,6 +49,8 @@ public class PhoneNetworkManager:MonoBehaviour {
 	}
 	private void OnDestroy()
 	{
+		if (!m_connected)
+			return;
 		UnityWebRequest myWr = UnityWebRequest.Get("http://" + url + "/closeGame?code=" + m_code);
 		myWr.SendWebRequest();
 		m_client.Close();
@@ -180,11 +188,17 @@ public class PhoneNetworkManager:MonoBehaviour {
 				{
 					onPlayerCountChange.Invoke(m_playerController.PlayerCount);
 				}
-                
-                break;
+				SceneManager.LoadScene(0);
+				break;
 			case MessageTypes.PlayerMove:
 				PlayerMoveMessage pmm = (PlayerMoveMessage)msg;
-				ThirdPersonUserControl.players[pmm.pid - 1].setAxis(pmm.x, pmm.y);
+				ThirdPersonUserControl player = ThirdPersonUserControl.players[pmm.pid - 1];
+				//if(pmm.x != null && pmm.y != null)
+					player.setAxis(pmm.x, pmm.y);
+				if (pmm.jmp)
+					player.jump = pmm.jmp;
+				if (pmm.drp)
+					player.drop = pmm.drp;
 				break;
 			case MessageTypes.PlayerAction:
 				PlayerActionMessage pam = (PlayerActionMessage)msg;

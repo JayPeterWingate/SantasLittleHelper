@@ -33,6 +33,7 @@ public class WebSocketClient: MonoBehaviour {
         m_ws.OnMessage += (sender, e) => AddToQueue(e.Data);
 
         m_ws.Connect();
+		return;
 #endif
 #if UNITY_WEBGL
         connectToSocket(connectionString);
@@ -43,6 +44,7 @@ public class WebSocketClient: MonoBehaviour {
     {
 #if UNITY_EDITOR
         m_ws.Close();
+		return;
 #endif
 #if UNITY_WEBGL
         closeSocket();
@@ -52,6 +54,7 @@ public class WebSocketClient: MonoBehaviour {
     {
 #if UNITY_EDITOR
         m_ws.Send(data);
+		return;
 #endif
 #if UNITY_WEBGL
         sendMessage(data);

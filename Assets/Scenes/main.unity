@@ -1160,7 +1160,7 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 67.95
+  m_fontSize: 24.55
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -5986,8 +5986,29 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 1.49042594
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7091535031993028154, guid: 4de4ac658c9cea7479484fcb0a37d916, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 4de4ac658c9cea7479484fcb0a37d916, type: 3}
+--- !u!1 &712266279 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 148348, guid: 4de4ac658c9cea7479484fcb0a37d916,
+    type: 3}
+  m_PrefabInstance: {fileID: 712266278}
+  m_PrefabAsset: {fileID: 0}
+--- !u!64 &712266280
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 712266279}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Convex: 0
+  m_CookingOptions: 14
+  m_Mesh: {fileID: 4300000, guid: 35ccfa658b0a3b347a2ea1007413b1e3, type: 3}
 --- !u!4 &712371914 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 436394, guid: edffbc9d9a9991241a2171db706070c9,
@@ -7323,7 +7344,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.13950089, y: 0.1353871}
   m_AnchorMax: {x: 0.8605006, y: 0.5}
-  m_AnchoredPosition: {x: 0.1499939, y: 2.2000122}
+  m_AnchoredPosition: {x: 0.15002441, y: 2.2000122}
   m_SizeDelta: {x: -5.200001, y: 2.3999996}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &836307830
@@ -13401,7 +13422,7 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 72
+  m_fontSize: 50
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1

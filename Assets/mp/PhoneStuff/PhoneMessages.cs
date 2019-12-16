@@ -46,6 +46,8 @@ public class PlayerMoveMessage : Message
 	public int id;
 	public float x;
 	public float y;
+	public bool jmp;
+	public bool drp;
 	public int pid;
 }
 public class PlayerJoinedMessage : Message

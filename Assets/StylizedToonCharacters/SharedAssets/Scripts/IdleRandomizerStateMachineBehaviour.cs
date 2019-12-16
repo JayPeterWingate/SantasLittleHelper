@@ -74,7 +74,8 @@ namespace Nicoplv.Characters
             {
                 duration += Time.deltaTime;
                 percent = Mathf.Min(duration / _duration, 1f);
-                _animator.SetFloat("IdleMovement", Mathf.Lerp(_from, _to, percent));
+				if(_animator)
+					_animator.SetFloat("IdleMovement", Mathf.Lerp(_from, _to, percent));
                 yield return null;
             }
         }

@@ -18,10 +18,14 @@ public class MenuScript : MonoBehaviour
     void Start()
     {
         Instance = this;
+		link.text = PhoneNetworkManager.manager.m_code;
 		syncPlayers(0);
 		PhoneNetworkManager.manager.onPlayerCountChange += syncPlayers;
     }
-
+	private void OnDestroy()
+	{
+		PhoneNetworkManager.manager.onPlayerCountChange -= syncPlayers;
+	}
 	private void syncPlayers(int newPlayerCount)
 	{
 		print("SAD");
