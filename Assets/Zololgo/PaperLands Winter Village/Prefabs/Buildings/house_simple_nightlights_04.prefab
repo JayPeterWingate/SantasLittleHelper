@@ -12,12 +12,12 @@ GameObject:
   - component: {fileID: 3363258}
   - component: {fileID: 2346084}
   - component: {fileID: 1934120869}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: house_simple_nightlights_04
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 69
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &416924
 Transform:
@@ -113,12 +113,12 @@ GameObject:
   - component: {fileID: 486980}
   - component: {fileID: 8525612048683419637}
   - component: {fileID: 7330919110755227225}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: chimney_smoke
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 1
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &486980
 Transform:
@@ -142,7 +142,7 @@ SphereCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 159972}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 1.85
@@ -171,6 +171,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Particle System
+      objectReference: {fileID: 0}
+    - target: {fileID: 3958512478490963063, guid: 8caecdcdac9ce6c45ad69c7c2b46a770,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 3958512478490963063, guid: 8caecdcdac9ce6c45ad69c7c2b46a770,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     - target: {fileID: 632769912626290390, guid: 8caecdcdac9ce6c45ad69c7c2b46a770,
         type: 3}

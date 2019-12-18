@@ -31,15 +31,16 @@ public class ThirdPersonUserControl : MonoBehaviour
 	}
 	private void OnDestroy()
 	{
+        onPointScore.RemoveAllListeners();
 		players.Remove(this);	
 	}
 
 	private void Update()
 	{
-		/*if (!m_Jump)
+		if (!m_Jump)
 		{
 			m_Jump = Input.GetAxis("Jump" + playerNumber) == -1;
-		}*/
+		}
 	}
 
 	public float horizontalAxis, verticleAxis;
@@ -51,7 +52,7 @@ public class ThirdPersonUserControl : MonoBehaviour
 		// read inputs
 		// if (playerNumber > 1) playerNumber = 1;
 		float v, h;
-		if (PhoneNetworkManager.manager.Connected)
+		if (false && PhoneNetworkManager.manager.Connected)
 		{
 			h = horizontalAxis;
 			v = verticleAxis;
@@ -139,7 +140,7 @@ public class ThirdPersonUserControl : MonoBehaviour
 			pressie.getHouse().SatifyGoal();
 			DropPresent();
             score += 1;
-            if (onPointScore != null) { onPointScore.Invoke(); }
+            onPointScore.Invoke();
 
             Destroy(thePressie.gameObject);
 		}

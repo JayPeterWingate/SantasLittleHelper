@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerSpawner : MonoBehaviour
 {
@@ -25,7 +26,13 @@ public class PlayerSpawner : MonoBehaviour
     
     int GetPlayerCount()
     {
-        return PhoneNetworkManager.manager.PlayerCount();
+        try
+        {
+            return PhoneNetworkManager.manager.PlayerCount();
+        } catch
+        {
+            return minPlayerCount;
+        }
     }
 
     Rect GetPlayerRect(int index, int playerCount)
@@ -36,5 +43,9 @@ public class PlayerSpawner : MonoBehaviour
         float width = playerCount <= 1 ? 1 : 0.5f;
         float height = playerCount <= 2 ? 1 : 0.5f;
         return new Rect(x, y, width, height);
+    }
+    public void EndGame()
+    {
+        SceneManager.LoadScene(0);
     }
 }

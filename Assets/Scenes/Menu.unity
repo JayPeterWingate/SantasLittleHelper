@@ -1366,7 +1366,7 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 133.1
+  m_fontSize: 58.9
   m_fontSizeBase: 69.9
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -1650,7 +1650,7 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 55.55
+  m_fontSize: 23.85
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -1814,7 +1814,7 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 61.05
+  m_fontSize: 36.65
   m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -2319,6 +2319,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bfeb05851eb506a4499ffe13a47b0b92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_code: 
 --- !u!4 &1053882995
 Transform:
   m_ObjectHideFlags: 0
@@ -4407,7 +4408,7 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 132.45
+  m_fontSize: 59.4
   m_fontSizeBase: 69.9
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -5664,6 +5665,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 813714974448423352, guid: 5db6a055f739fb445b08f16046d8f5d6,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5db6a055f739fb445b08f16046d8f5d6, type: 3}
 --- !u!4 &2000586282 stripped
@@ -5934,7 +5940,7 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 49.85
+  m_fontSize: 49.2
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1

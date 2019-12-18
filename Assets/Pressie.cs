@@ -36,6 +36,7 @@ public class Pressie : MonoBehaviour
 	{
 		this.house = house;
 	}
+    
 	public HouseDropPoint getHouse()
 	{
 		return house;
